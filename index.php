@@ -3,7 +3,7 @@
 // Server Status for Status Board
 // Version 0.1
 // Core Assistance - Justin Michael
-// Compatible with Linux, Mac OS X, macOS, and FreeBSD
+// Compatible with Linux (kernel 3.14+), Mac OS X, macOS, and FreeBSD
 
 // !---- Configuration ----
 
@@ -75,7 +75,7 @@ $loadPercentageString = $loadPercentage . '%';
 
 // TODO: This only works for Linux at the moment, need to adapt for Mac and FreeBSD.
 $memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
-$memoryFree = intval(trimmedResultOfCommand("grep MemFree /proc/meminfo | awk '{print $2}'"));
+$memoryFree = intval(trimmedResultOfCommand("grep MemAvailable /proc/meminfo | awk '{print $2}'"));
 $memoryUsed = $memoryTotal - $memoryFree;
 
 $memoryPercentage = ($memoryUsed / $memoryTotal) * 100;
@@ -105,8 +105,28 @@ $diskPercentageString = $diskPercentage . '%';
 			data-min-size="4,4"
 			data-max-size="4,4"
 			data-allows-scrolling="NO">
+		<style type="text/css">
+			
+			body {
+				color: white;
+				font-family: "StatusBoardFont";
+			}
+			
+		</style>
 	</head>
 	<body>
+		<h1><?php echo $serverName; ?></h1>
 		
+		<div id="load">
+			Load: <?php echo $loadPercentageString; ?>
+		</div>
+		
+		<div id="memory">
+			Memory: <?php echo $memoryPercentageString; ?>
+		</div>
+		
+		<div id="disk">
+			Disk: <?php echo $diskPercentageString; ?>
+		</div>
 	</body>
 </html>
