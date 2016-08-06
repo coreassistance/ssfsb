@@ -2,7 +2,7 @@
 
 // Server Status for Status Board
 // Core Assistance - Justin Michael
-// Requires PHP 5.???
+// Requires PHP 5.1.3
 // Compatible with Linux (kernel 3.14+) and Mac OS X/macOS 10.9+.
 
 // !---- Configuration ----
@@ -33,7 +33,19 @@ function trimmedResultOfCommand($command) {
 
 $version = '0.1';
 
-// Populate the server name if not supplied in the configuration section.
+$updateInterval = 60;
+
+// Server Name
+
+$serverName = '';
+
+$serverNameFile = 'ssfsb.name';
+
+if (file_exists($serverNameFile)) {
+	$serverName = file_get_contents($serverNameFile);
+}
+
+// Populate the server name if not otherwise supplied.
 if (empty($serverName)) {
 	$serverName = trimmedResultOfCommand('hostname');
 }
@@ -147,7 +159,7 @@ if ($diskPercentage >= 90) {
 <html>
 	<head>
 		<title>Server Status for Status Board</title>
-		<meta data-refresh-every-n-seconds="60" 
+		<meta data-refresh-every-n-seconds="<?php echo $updateInterval; ?>" 
 			application-name="<?php echo ucfirst($serverName); ?> Status"
 			data-allows-resizing="NO"
 			data-default-size="4,4"
@@ -266,7 +278,7 @@ if ($diskPercentage >= 90) {
 					
 					updateAgeElement(age);
 					
-					if (age >= 60) {
+					if (age >= <?php echo $updateInterval; ?>) {
 						document.location.reload(true);
 					}
 				}, 1000);
