@@ -67,7 +67,15 @@ $loadPercentageString = $loadPercentage * 100 . '%';
 
 // !---- Memory ----
 
+// TODO: This only works for Linux at the moment, need to adapt for Mac and FreeBSD.
+$memoryTotal = intval(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")));
+$memoryFree = intval(trim(shell_exec("grep MemFree /proc/meminfo | awk '{print $2}'")));
+$memoryUsed = $memoryTotal - $memoryFree;
 
+$memoryPercentage = $memoryUsed / $memoryTotal;
+$memoryPercentage = round($memoryPercentage);
+
+$memoryPercentageString = $memoryPercentage * 100 . '%';
 
 // !---- Disk Space ----
 
