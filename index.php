@@ -135,7 +135,7 @@ $diskPercentageString = $diskPercentage . '%';
 
 $diskStatus = 'good';
 
-if ($diskUsedPercentage >= 70) {
+if ($diskPercentage >= 70) {
 	$diskStatus = 'warn';
 }
 
