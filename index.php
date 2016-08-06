@@ -3,11 +3,13 @@
 // Server Status for Status Board
 // Version 0.1
 // Core Assistance - Justin Michael
-// Compatible with Linux (kernel 3.14+), Mac OS X, macOS, and FreeBSD
+// Requires PHP 5.???
+// Compatible with Linux (kernel 3.14+) and Mac OS X/macOS 10.9+.
 
 // !---- Configuration ----
 
-$serverName = 'Concordia';
+// If you want to customize the name of this server just populate this variable.
+$serverName = '';
 	
 // !---- Reference Material ----
 
@@ -28,6 +30,16 @@ function trimmedResultOfCommand($command) {
 	return trim(shell_exec($command));
 }
 
+// !---- Setup ----
+
+// Populate the server name if not supplied in the configuration section.
+if (empty($serverName)) {
+	$serverName = trimmedResultOfCommand('hostname');
+}
+
+// Determine what OS we're running on.
+$operatingSystem = strtolower(trimmedResultOfCommand('uname'));
+
 // !---- Load ----
 
 // sys_getloadavg() returns an array with the three load averages (1, 5, and 15 minutes).
@@ -44,17 +56,13 @@ $cores = 0;
 // Variable to hold the command we're going to use to determine the number of CPU cores on the system.
 $coresCommand = false;
 
-// First we need to determine the OS.  The uname command will give us the operating system name.
-$operatingSystem = strtolower(trimmedResultOfCommand('uname'));
-
 // Select the appropriate command for the operating system we're running.
 switch ($operatingSystem) {
 	case 'linux':
 		$coresCommand = 'cat /proc/cpuinfo | grep processor | wc -l';
 		break;
 	
-	case 'freebsd':
-	case 'darwin': // Includes Mac OS X & macOS
+	case 'darwin': // Mac OS X & macOS
 		$coresCommand = "sysctl -a | grep 'hw.ncpu' | cut -d ':' -f2";
 		break;
 }
