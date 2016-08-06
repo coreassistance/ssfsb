@@ -215,7 +215,7 @@ if ($diskPercentage >= 90) {
 			
 		</style>
 	</head>
-	<body onload="updateAge();">
+	<body onload="update();">
 		<h1><?php echo $serverName; ?></h1>
 
 		<div id="load">
@@ -245,16 +245,19 @@ if ($diskPercentage >= 90) {
 				ageElement.innerHTML = 'Data is ' + age + ' seconds old.';
 			}
 			
-			function updateAge() {
-				var ageElement = document.getElementById('age');
-				
+			function update() {
 				var age = 0;
 				
 				updateAgeElement(age);
 				
 				setInterval(function () {
 					age++;
+					
 					updateAgeElement(age);
+					
+					if (age >= 60) {
+						document.location.reload(true);
+					}
 				}, 1000);
 			}
 			
