@@ -22,6 +22,12 @@ $serverName = 'Concordia';
 // Yellow: rgb(255,198,0)
 // Red: rgb(255,48,0)
 
+// !---- Functions ----
+
+function trimmedResultOfCommand($command) {
+	return trim(shell_exec($command));
+}
+
 // !---- Load ----
 
 // sys_getloadavg() returns an array with the three load averages (1, 5, and 15 minutes).
@@ -39,7 +45,7 @@ $cores = 0;
 $coresCommand = false;
 
 // First we need to determine the OS.  The uname command will give us the operating system name.
-$operatingSystem = strtolower(trim(shell_exec('uname')));
+$operatingSystem = strtolower(trimmedResultOfCommand('uname'));
 
 // Select the appropriate command for the operating system we're running.
 switch ($operatingSystem) {
@@ -55,29 +61,38 @@ switch ($operatingSystem) {
 
 // If we have a command to execute, execute it to get the number of cores.
 if ($coresCommand) {
-	$cores = intval(trim(shell_exec($coresCommand)))
+	$cores = intval(trimmedResultOfCommand($coresCommand));
 }
 
 // To figure out the percentage of load on the server over the last 15 minutes, we divide the load average by the number of cores.
-$loadPercentage = $loadAverage15 / $cores;
+$loadPercentage = ($loadAverage15 / $cores) * 100;
 $loadPercentage = round($loadPercentage);
 
 // Convert the load percentage into a string for display.
-$loadPercentageString = $loadPercentage * 100 . '%';
+$loadPercentageString = $loadPercentage . '%';
 
 // !---- Memory ----
 
 // TODO: This only works for Linux at the moment, need to adapt for Mac and FreeBSD.
-$memoryTotal = intval(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")));
-$memoryFree = intval(trim(shell_exec("grep MemFree /proc/meminfo | awk '{print $2}'")));
+$memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
+$memoryFree = intval(trimmedResultOfCommand("grep MemFree /proc/meminfo | awk '{print $2}'"));
 $memoryUsed = $memoryTotal - $memoryFree;
 
-$memoryPercentage = $memoryUsed / $memoryTotal;
+$memoryPercentage = ($memoryUsed / $memoryTotal) * 100;
 $memoryPercentage = round($memoryPercentage);
 
-$memoryPercentageString = $memoryPercentage * 100 . '%';
+$memoryPercentageString = $memoryPercentage . '%';
 
 // !---- Disk Space ----
+
+$diskTotal = disk_total_space('/');
+$diskFree = disk_free_space('/');
+$diskUsed = $diskTotal - $diskFree;
+
+$diskPercentage = ($diskUsed / $diskTotal) * 100;
+$diskPercentage = round($diskPercentage);
+
+$diskPercentageString = $diskPercentage . '%';
 
 ?><!DOCTYPE html>
 <html>
