@@ -91,13 +91,20 @@ if ($loadPercentage >= 90) {
 
 // !---- Memory ----
 
-// TODO: This only works for Linux at the moment, need to adapt for Mac and FreeBSD.
-$memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
-$memoryFree = intval(trimmedResultOfCommand("grep MemAvailable /proc/meminfo | awk '{print $2}'"));
-$memoryUsed = $memoryTotal - $memoryFree;
+if ($operatingSystem == 'linux') {
+	$memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
+	$memoryFree = intval(trimmedResultOfCommand("grep MemAvailable /proc/meminfo | awk '{print $2}'"));
+	$memoryUsed = $memoryTotal - $memoryFree;
+	
+	$memoryPercentage = ($memoryUsed / $memoryTotal) * 100;
+	$memoryPercentage = round($memoryPercentage);
+}
 
-$memoryPercentage = ($memoryUsed / $memoryTotal) * 100;
-$memoryPercentage = round($memoryPercentage);
+if ($operatingSystem == 'darwin') {
+	preg_match('/([0-9]{1,3})%/', shell_exec('memory_pressure'), $matches);
+	$memoryFreePercentage = intval($matches[1]);
+	$memoryUsedPercentage = 100 - $memoryFreePercentage;
+}
 
 $memoryPercentageString = $memoryPercentage . '%';
 
