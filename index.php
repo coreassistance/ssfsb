@@ -92,6 +92,8 @@ if ($loadPercentage >= 90) {
 
 // !---- Memory ----
 
+$memoryPercentage = 0;
+
 if ($operatingSystem == 'linux') {
 	$memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
 	$memoryFree = intval(trimmedResultOfCommand("grep MemAvailable /proc/meminfo | awk '{print $2}'"));
@@ -102,9 +104,10 @@ if ($operatingSystem == 'linux') {
 }
 
 if ($operatingSystem == 'darwin') {
+	$matches = [];
 	preg_match('/([0-9]{1,3})%/', shell_exec('memory_pressure'), $matches);
 	$memoryFreePercentage = intval($matches[1]);
-	$memoryUsedPercentage = 100 - $memoryFreePercentage;
+	$memoryPercentage = 100 - $memoryFreePercentage;
 }
 
 $memoryPercentageString = $memoryPercentage . '%';
