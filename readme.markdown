@@ -11,7 +11,9 @@ A simple Linux/Mac server status panel for [Panic's Status Board](http://panic.c
 - Memory Use
 - Disk Use (For the drive the script is run from.)
 
-<img src="ssfsb.png" style="width: 50%; height: 50%" alt="Server Status for Status Board Screen Shot">
+<img src="ssfsb.png" style="width: 50%; height: 50%;" alt="Server Status for Status Board Screen Shot">
+
+(The values shown in this screenshot are contrived to illustrate the color coding of the bars.  I hope your memory use is never this high!)
 
 **Server Name** is determined using the `hostname` command, but can be overridden (see the Configuration section below).
 
