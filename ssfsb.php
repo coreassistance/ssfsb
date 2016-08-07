@@ -24,7 +24,7 @@ function trimmedResultOfCommand($command) {
 
 // !---- Setup ----
 
-$version = '1.0';
+$version = '1.1 Beta 1';
 
 // The length of time, in seconds, before this panel is reloaded from the server.
 $updateInterval = 60;
