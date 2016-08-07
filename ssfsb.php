@@ -250,12 +250,12 @@ if ($diskPercentage >= 90) {
 		</div>
 		
 		<div id="memory">
-			<h2>Memory In Use</h2>
+			<h2>Memory Use</h2>
 			<p class="bar <?php echo $memoryStatus; ?>" style="width: <?php echo $memoryPercentageString; ?>;"><?php echo $memoryPercentageString; ?></p>
 		</div>
 		
 		<div id="disk">
-			<h2>Disk In Use</h2>
+			<h2>Disk Use</h2>
 			<p class="bar <?php echo $diskStatus; ?>" style="width: <?php echo $diskPercentageString; ?>;"><?php echo $diskPercentageString; ?></p>
 		</div>
 		
