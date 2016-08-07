@@ -83,6 +83,9 @@ $loadPercentage = ($loadAverage15 / $cores) * 100;
 // Round the value, as this is a *simple* status panel.
 $loadPercentage = round($loadPercentage);
 
+// Override for screenshots.
+//$loadPercentage = 42;
+
 // Convert the load percentage into a string for display.
 $loadPercentageString = $loadPercentage . '%';
 
@@ -124,6 +127,9 @@ if ($operatingSystem == 'darwin') {
 	$memoryPercentage = 100 - $memoryFreePercentage;
 }
 
+// Override for screenshots.
+//$memoryPercentage = 92;
+
 $memoryPercentageString = $memoryPercentage . '%';
 
 $memoryStatus = 'good';
@@ -145,6 +151,9 @@ $diskUsed = $diskTotal - $diskFree;
 
 $diskPercentage = ($diskUsed / $diskTotal) * 100;
 $diskPercentage = round($diskPercentage);
+
+// Override for screenshots.
+//$diskPercentage = 71;
 
 $diskPercentageString = $diskPercentage . '%';
 
