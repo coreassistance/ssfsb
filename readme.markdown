@@ -39,6 +39,10 @@ You can override the **Server Name** by doing the following:
 1. Create a `ssfsb.name` file containing your desired server name.
 2. Place it alongside the `ssfsb.php` file on your server.
 
+### Resizing
+
+The default size of this Status Board panel is 4 by 4 tiles.  The panel can be adjusted to between 4 and 16 tiles wide within Status Board.
+
 ## History
 
 ### 1.0
