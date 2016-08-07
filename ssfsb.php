@@ -164,10 +164,10 @@ if ($diskPercentage >= 90) {
 		<title>Server Status for Status Board</title>
 		<meta data-refresh-every-n-seconds="<?php echo $updateInterval; ?>" 
 			application-name="<?php echo ucfirst($serverName); ?> Status"
-			data-allows-resizing="NO"
+			data-allows-resizing="YES"
 			data-default-size="4,4"
 			data-min-size="4,4"
-			data-max-size="4,4"
+			data-max-size="16,4"
 			data-allows-scrolling="NO">
 		<style type="text/css">
 			
