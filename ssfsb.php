@@ -128,7 +128,7 @@ $memoryPercentageString = $memoryPercentage . '%';
 
 $memoryStatus = 'good';
 
-if ($memoryUsedPercentage >= 70) {
+if ($memoryPercentage >= 70) {
 	$memoryStatus = 'warn';
 }
 
