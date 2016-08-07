@@ -1,14 +1,7 @@
 <?php
 
 // Server Status for Status Board
-// Core Assistance - Justin Michael
-// Requires PHP 5.1.3
-// Compatible with Linux (kernel 3.14+) and Mac OS X/macOS 10.9+.
-
-// !---- Configuration ----
-
-// If you want to customize the name of this server just populate this variable.
-$serverName = '';
+// Brought to you by Justin Michael at [Core Assistance](http://coreassistance.com/).
 	
 // !---- Reference Material ----
 
@@ -31,8 +24,9 @@ function trimmedResultOfCommand($command) {
 
 // !---- Setup ----
 
-$version = '0.1';
+$version = '1.0';
 
+// The length of time, in seconds, before this panel is reloaded from the server.
 $updateInterval = 60;
 
 // Server Name
@@ -41,16 +35,17 @@ $serverName = '';
 
 $serverNameFile = 'ssfsb.name';
 
+// If there's a file with a server name inside, use it.
 if (file_exists($serverNameFile)) {
 	$serverName = file_get_contents($serverNameFile);
 }
 
-// Populate the server name if not otherwise supplied.
+// Populate the server name using the hostname command if we don't have one yet.
 if (empty($serverName)) {
 	$serverName = trimmedResultOfCommand('hostname');
 }
 
-// Determine what OS we're running on.
+// Determine what OS we're on.
 $operatingSystem = strtolower(trimmedResultOfCommand('uname'));
 
 // !---- Load ----
@@ -61,10 +56,8 @@ $loadAverages = sys_getloadavg();
 // We're only interested in the 15 minute load average.
 $loadAverage15 = $loadAverages[2];
 
-// Number of CPU cores.
-
-// Variable to hold the number of CPU cores.
-$cores = 0;
+// Variable to hold the number of CPU cores.  Assume one core going in.
+$cores = 1;
 
 // Variable to hold the command we're going to use to determine the number of CPU cores on the system.
 $coresCommand = false;
@@ -87,11 +80,13 @@ if ($coresCommand) {
 
 // To figure out the percentage of load on the server over the last 15 minutes, we divide the load average by the number of cores.
 $loadPercentage = ($loadAverage15 / $cores) * 100;
+// Round the value, as this is a *simple* status panel.
 $loadPercentage = round($loadPercentage);
 
 // Convert the load percentage into a string for display.
 $loadPercentageString = $loadPercentage . '%';
 
+// Determine if the load is good, something that should be warned about, or bad.
 $loadStatus = 'good';
 
 if ($loadPercentage >= 70) {
@@ -106,6 +101,8 @@ if ($loadPercentage >= 90) {
 
 $memoryPercentage = 0;
 
+// For Linux we can extract memory information from /proc/meminfo easily.
+// Note that the MemAvailable part of meminfo is only present in Linux kernel 3.14 or higher.
 if ($operatingSystem == 'linux') {
 	$memoryTotal = intval(trimmedResultOfCommand("grep MemTotal /proc/meminfo | awk '{print $2}'"));
 	$memoryFree = intval(trimmedResultOfCommand("grep MemAvailable /proc/meminfo | awk '{print $2}'"));
@@ -115,10 +112,15 @@ if ($operatingSystem == 'linux') {
 	$memoryPercentage = round($memoryPercentage);
 }
 
+// On the Mac we can use the memory_pressure command, which displays the "System-wide memory free percentage"
 if ($operatingSystem == 'darwin') {
-	$matches = [];
+	// The free memory percentage is the only percentage memory_pressure spits out.  This regular expression looks for one to three numbers followed by a percent sign, and encloses the numbers only in a capture group.  The matches are stored in $matches, with the entire match at $matches[0] and the capture group at $matches[1].  So, if the percentage from the memory_pressure command was 42%, $matches[0] would be '42%' and $matches[1] would be '42'.
 	preg_match('/([0-9]{1,3})%/', shell_exec('memory_pressure'), $matches);
+	
+	// Convert the percentage numbers to an integer.
 	$memoryFreePercentage = intval($matches[1]);
+	
+	// And calculate how much memory is in use.
 	$memoryPercentage = 100 - $memoryFreePercentage;
 }
 
@@ -136,6 +138,7 @@ if ($memoryPercentage >= 90) {
 
 // !---- Disk Space ----
 
+// Yay for easy, built in PHP functions!
 $diskTotal = disk_total_space('/');
 $diskFree = disk_free_space('/');
 $diskUsed = $diskTotal - $diskFree;
@@ -268,11 +271,15 @@ if ($diskPercentage >= 90) {
 				ageElement.innerHTML = 'Data is ' + age + ' seconds old. (SSfSB v<?php echo $version; ?>)';
 			}
 			
+			// This is called by the onload attribute of the body element.
 			function update() {
+				// Keep track of how hold the information displayed is.
 				var age = 0;
 				
+				// Update the age immediately upon load.
 				updateAgeElement(age);
 				
+				// Every second, increment the age count, update the age element, and when we hit the update interval, reload.
 				setInterval(function () {
 					age++;
 					
