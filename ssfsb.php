@@ -24,7 +24,7 @@ function trimmedResultOfCommand($command) {
 
 // !---- Setup ----
 
-$version = '1.1 Beta 1';
+$version = '1.1';
 
 // Enable error reporting for testing.
 //error_reporting(E_ALL);
