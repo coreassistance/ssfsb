@@ -26,6 +26,9 @@ function trimmedResultOfCommand($command) {
 
 $version = '1.1 Beta 1';
 
+// Enable error reporting for testing.
+//error_reporting(E_ALL);
+
 // The length of time, in seconds, before this panel is reloaded from the server.
 $updateInterval = 60;
 
