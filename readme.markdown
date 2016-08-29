@@ -47,6 +47,13 @@ The default size of this Status Board panel is 4 by 4 tiles.  The panel can be a
 
 ## History
 
+### 1.1
+
+- Fixed memory percentage bar display bug.
+- Fixed internal refresh interval conflict with Status Board refresh interval.
+- Added override code for better screenshots.
+- Created a better screenshot.
+
 ### 1.0
 
 - Initial release.
