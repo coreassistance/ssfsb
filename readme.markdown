@@ -1,6 +1,6 @@
 # Server Status for Status Board (SSfSB)
 
-Brought to you by Justin Michael at [Core Assistance](http://coreassistance.com/).
+by Justin Michael
 
 ## Summary
 
@@ -25,7 +25,6 @@ A simple Linux/Mac server status panel for [Panic's Status Board](http://panic.c
 
 - Linux with kernel 3.14+ *or* Mac OS X 10.9+
 - PHP 5.1.3+
-- Any web server compatible with PHP.
 
 ## Installation
 
@@ -46,6 +45,10 @@ You can override the **Server Name** by doing the following:
 The default size of this Status Board panel is 4 by 4 tiles.  The panel can be adjusted to between 4 and 16 tiles wide within Status Board.
 
 ## History
+
+### 1.2
+
+- The "Data is XX seconds old." line will now turn red if the data being displayed is *too* old, which helps you know at a glance if a server is having connectivity or responsiveness issues.
 
 ### 1.1
 

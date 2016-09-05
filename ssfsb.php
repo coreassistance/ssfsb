@@ -24,7 +24,7 @@ function trimmedResultOfCommand($command) {
 
 // !---- Setup ----
 
-$version = '1.1';
+$version = '1.2';
 
 // Enable error reporting for testing.
 //error_reporting(E_ALL);
@@ -235,6 +235,10 @@ if ($diskPercentage >= 90) {
 				margin-top: .5rem;
 			}
 			
+			#age.tooOld {
+				color: rgb(255,48,0);
+			}
+			
 			.bar {
 				border-radius: .25rem;
 			}
@@ -296,6 +300,13 @@ if ($diskPercentage >= 90) {
 					age++;
 					
 					updateAgeElement(age);
+					
+					if (age >= <?php echo $updateInterval + 5; ?>) {
+						document.getElementById('age').className = 'tooOld';
+					}
+					else {
+						document.getElementById('age').className = '';
+					}
 					
 					if (age >= <?php echo $updateInterval; ?>) {
 						document.location.reload(true);
